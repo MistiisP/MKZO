@@ -1,0 +1,31 @@
+apt install -y asterisk
+
+echo "" > /etc/asterisk/pjsip.conf
+nano /etc/asterisk/pjsip.conf
+______________________________________________________
+[global]
+type=global
+user_agent=Asterisk-Secure-PBX
+
+; ==========================================
+; SYSTÉMOVÉ NASTAVENÍ ŠIFROVANÉHO PŘENOSU (TLS)
+; ==========================================
+[tls-transport]
+type=transport
+protocol=tls
+bind=0.0.0.0:5070
+cert_file=/etc/asterisk/certs/asterisk.crt
+priv_key_file=/etc/asterisk/certs/asterisk.key
+method=tlsv1_2
+; Požadujeme, aby i Kamailio poslalo svůj certifikát (Mutual TLS)
+verify_client=yes
+require_client_cert=yes
+____________________________________________________________________
+
+Příprava složky pro certifikáty:
+mkdir -p /etc/asterisk/certs
+chown -R asterisk:asterisk /etc/asterisk/certs
+wget https://raw.githubusercontent.com/asterisk/asterisk/master/contrib/scripts/ast_tls_cert
+chmod 777 ast_tls_cert
+./ast_tls_cert -C IP_ADRESA_SERVERU -O VSB -d /etc/asterisk/certs
+./ast_tls_cert -m client -c /etc/asterisk/certs/ca.crt -k /etc/asterisk/certs/ca.key -C TVOJE_IP_SERVERU -O "VSB" -d /etc/asterisk/certs -o kamailio

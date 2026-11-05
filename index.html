@@ -21,8 +21,8 @@
   <main>
     <section class="hero container">
       <div class="hero-copy">
-        <h1>Bezpečný SIP trunk.<br></h1>
-        <p class="hero-lead">Návrh a ověření zabezpečeného spojení mezi Asterisk PBX a Kamailio pomocí TLS, certifikátů a řízení důvěryhodnosti.</p>
+        <h1>Bezpečný SIP trunk.</h1>
+        <p class="hero-lead">Cílem projektu byl návrh, vytvoření a ověření zabezpečeného SIP trunk mezi Asterisk PBX a Kamailio pomocí TLS, certifikátů a řízení důvěryhodnosti.</p>
       </div>
       <div class="hero-visual" aria-label="Schéma zabezpečeného spojení">
         <div class="visual-grid"></div>
@@ -33,22 +33,23 @@
       </div>
     </section>
 
-    <section class="section container" id="about">
-      <div class="section-intro">
+    <section class="hero container" id="about">
+      <div class="hero-copy">
         <p class="eyebrow">01 · Kontext</p>
         <h2>Proč zabezpečovat<br><em>VoIP komunikaci?</em></h2>
       </div>
       <div class="section-body">
         <p class="lead">SIP řídí navázání hovoru, ale ve své základní podobě neposkytuje dostatečnou ochranu proti odposlechu, podvržení identity ani manipulaci se signalizací.</p>
         <p>Tento projekt se zaměřuje na návrh bezpečného SIP trunku mezi ústřednou Asterisk a proxy serverem Kamailio. Řešení nahrazuje nezabezpečený transport TCP/UDP vrstvou TLS a využívá certifikáty k ověření obou stran.</p>
-        <p><strong>Cíl projektu:</strong> vytvořit opakovatelnou konfiguraci, na které lze názorně porovnat nešifrovaný SIP provoz s provozem chráněným pomocí TLS.</p></div>
+        <p><strong>Cíl projektu:</strong> vytvořit opakovatelnou konfiguraci, na které lze názorně porovnat nešifrovaný SIP provoz s provozem chráněným pomocí TLS.</p>
       </div>
     </section>
 
-    <section class="dark-section" id="architecture">
-      <div class="container">
+
+    <section class="hero container" id="architecture">
+      <div class="hero-copy">
         <div class="section-heading">
-          <div><p class="eyebrow eyebrow-light">02 · Návrh řešení</p><h2>Od klienta k proxy.<br></h2></div>
+          <div><p class="eyebrow eyebrow-light">02 · Návrh řešení</p><h2>Od klienta k proxy.</h2></div>
           <p>Kamailio funguje jako vstupní bod a směruje SIP signalizaci. Asterisk zajišťuje logiku ústředny, registraci a samotné zpracování hovorů.</p>
         </div>
         <div class="architecture">
@@ -58,27 +59,21 @@
           <div class="architecture-bridge"><span class="bridge-line"></span><span class="bridge-label">ověření certifikátu</span><span class="bridge-arrow">→</span></div>
           <div class="architecture-step"><span class="step-number">03</span><div class="architecture-icon">✓</div><h3>Ověřený trunk</h3><p>Komunikace s integritou, autenticitou a utajením.</p><code>verify_client = yes</code></div>
         </div>
-      </div>
-    </section>
-
-    <section class="section container" id="security">
-      <div class="section-intro">
-        <p class="eyebrow">03 · Bezpečnostní vrstva</p>
-        <h2>Co přesně<br><em>chrání TLS?</em></h2>
-      </div>
       <div class="section-body">
         <div class="security-list">
+          <h2>Co přesně<br><em>chrání TLS?</em></h2>
           <article><span class="security-number">01</span><div><h3>Šifrování obsahu</h3><p>SIP signalizace není přenášena jako čitelný text. Útočník na síti neuvidí čísla, hlavičky ani parametry hovoru.</p></div></article>
           <article><span class="security-number">02</span><div><h3>Autenticita protistrany</h3><p>Certifikační autorita potvrzuje, že se Asterisk připojuje ke správnému Kamailiu a naopak.</p></div></article>
           <article><span class="security-number">03</span><div><h3>Integrita přenosu</h3><p>Kontrolní mechanismy TLS odhalí změnu paketů během přenosu a spojení ukončí.</p></div></article>
         </div>
       </div>
+      </div>
     </section>
+
 
 
     <section class="section container" id="documentation">
       <p class="eyebrow">04 · Dokumentace</p>
-      <br>
       <div class="section-body documentation-content">
         <article class="doc-entry">
           <h3>Popis práce</h3>
