@@ -20,17 +20,8 @@
 
   <main>
     <section class="hero container">
-      <div class="hero-copy">
         <h1>Bezpečný SIP trunk.</h1>
-        <p class="hero-lead">Cílem projektu byl návrh, vytvoření a ověření zabezpečeného SIP trunk mezi Asterisk PBX a Kamailio pomocí TLS, certifikátů a řízení důvěryhodnosti.</p>
-      </div>
-      <div class="hero-visual" aria-label="Schéma zabezpečeného spojení">
-        <div class="visual-grid"></div>
-        <div class="node node-client"><span class="node-icon">☎</span><strong>Asterisk</strong><small>PBX / UAC</small></div>
-        <div class="connection-line"><span class="packet packet-one"></span><span class="packet packet-two"></span><span class="lock">⌑</span></div>
-        <div class="node node-server"><span class="node-icon">◈</span><strong>Kamailio</strong><small>SIP proxy / UAS</small></div>
-        <div class="visual-label">TLS 1.2+ <span>·</span> mTLS</div>
-      </div>
+        <p class="hero-lead">Cílem projektu bylo vytvoření a ověření zabezpečeného SIP trunk mezi Asterisk PBX a Kamailio pomocí TLS, certifikátů a řízení důvěryhodnosti.</p>
     </section>
 
     <section class="hero container" id="about">
@@ -40,8 +31,20 @@
       </div>
       <div class="section-body">
         <p class="lead">SIP řídí navázání hovoru, ale ve své základní podobě neposkytuje dostatečnou ochranu proti odposlechu, podvržení identity ani manipulaci se signalizací.</p>
-        <p>Tento projekt se zaměřuje na návrh bezpečného SIP trunku mezi ústřednou Asterisk a proxy serverem Kamailio. Řešení nahrazuje nezabezpečený transport TCP/UDP vrstvou TLS a využívá certifikáty k ověření obou stran.</p>
-        <p><strong>Cíl projektu:</strong> vytvořit opakovatelnou konfiguraci, na které lze názorně porovnat nešifrovaný SIP provoz s provozem chráněným pomocí TLS.</p>
+        <p class="lead">SIP signalizace není přenášena jako čitelný text. Útočník na síti neuvidí čísla, hlavičky ani parametry hovoru.</p>
+      </div>
+    </section>
+
+
+    <section class="hero container" id="about">
+      <div class="hero-copy">
+        <p class="eyebrow">02 · TLS</p>
+        <h2>Jak<em> TLS</em> chrání?</h2>
+      </div>
+      <div class="section-body">
+        <p class="lead"><h3>Šifrování</h3><p>Všechna data mezi Asterisk a Kamailio jsou šifrovaná pomocí TLS, což zabraňuje odposlechu.</p>
+        <p class="lead"><h3>Autenticita protistrany</h3> Certifikační autorita potvrzuje, že se Asterisk připojuje ke správnému Kamailiu a naopak.</p>
+        <p class="lead"><h3>Integrita přenosu</h3> Kontrolní mechanismy TLS odhalí změnu paketů během přenosu a spojení ukončí.</p>
       </div>
     </section>
 
@@ -49,7 +52,7 @@
     <section class="hero container" id="architecture">
       <div class="hero-copy">
         <div class="section-heading">
-          <div><p class="eyebrow eyebrow-light">02 · Návrh řešení</p><h2>Od klienta k proxy.</h2></div>
+          <div><p class="eyebrow eyebrow-light">03 · Návrh řešení</p><h2>Od klienta k proxy.</h2></div>
           <p>Kamailio funguje jako vstupní bod a směruje SIP signalizaci. Asterisk zajišťuje logiku ústředny, registraci a samotné zpracování hovorů.</p>
         </div>
         <div class="architecture">
@@ -59,38 +62,364 @@
           <div class="architecture-bridge"><span class="bridge-line"></span><span class="bridge-label">ověření certifikátu</span><span class="bridge-arrow">→</span></div>
           <div class="architecture-step"><span class="step-number">03</span><div class="architecture-icon">✓</div><h3>Ověřený trunk</h3><p>Komunikace s integritou, autenticitou a utajením.</p><code>verify_client = yes</code></div>
         </div>
-      <div class="section-body">
-        <div class="security-list">
-          <h2>Co přesně<br><em>chrání TLS?</em></h2>
-          <article><span class="security-number">01</span><div><h3>Šifrování obsahu</h3><p>SIP signalizace není přenášena jako čitelný text. Útočník na síti neuvidí čísla, hlavičky ani parametry hovoru.</p></div></article>
-          <article><span class="security-number">02</span><div><h3>Autenticita protistrany</h3><p>Certifikační autorita potvrzuje, že se Asterisk připojuje ke správnému Kamailiu a naopak.</p></div></article>
-          <article><span class="security-number">03</span><div><h3>Integrita přenosu</h3><p>Kontrolní mechanismy TLS odhalí změnu paketů během přenosu a spojení ukončí.</p></div></article>
-        </div>
-      </div>
       </div>
     </section>
 
 
 
     <section class="section container" id="documentation">
-      <p class="eyebrow">04 · Dokumentace</p>
-      <div class="section-body documentation-content">
-        <article class="doc-entry">
-          <h3>Popis práce</h3>
-          <p>Doplňte postup instalace, konfiguraci serverů a použité nástroje.</p>
-        </article>
-        <article class="doc-entry">
-          <h3>Výsledky</h3>
-          <p>Vložte screenshoty, výpisy z Wiresharku a ověření certifikátů.</p>
-        </article>
+      <p class="eyebrow">04 · Postup práce</p>
+      <div class="documentation-content">
+        <div class="doc-entry">
+          <h2>Instalace Asterisku</h2>
+          <p>Instalace balíčku, příprava konfigurace PJSIP a vytvoření adresáře pro certifikáty.</p>
+          <div class="terminal">
+            <div class="terminal-label">Terminál</div>
+            <pre><code>
+apt install -y asterisk
+echo "" > /etc/asterisk/pjsip.conf
+nano /etc/asterisk/pjsip.conf
+mkdir -p /etc/asterisk/certs
+chown -R asterisk:asterisk /etc/asterisk/certs
+            </code></pre>
+          </div>
+        </div>
+
+        <div class="doc-entry">
+          <h2>Vytvoření certifikátů</h2>
+          <p>Vlastní certifikační autorita vystaví certifikáty pro Asterisk a Kamailio. Obě strany se díky nim mohou vzájemně ověřit během TLS spojení.</p>
+          <div class="terminal">
+            <div class="terminal-label">OpenSSL · vytvoření PKI</div>
+            <pre><code>
+mkdir -p /root/pki &amp;&amp; cd /root/pki
+
+# 1) Certifikační autorita
+openssl genrsa -out ca.key 4096
+openssl req -x509 -new -key ca.key -sha256 -days 825 -subj "/O=VSB/CN=VSB Private CA" \
+  -addext "basicConstraints=critical,CA:TRUE" \
+  -addext "keyUsage=critical,keyCertSign,cRLSign" \
+  -out ca.crt
+
+# 2) Asterisk
+openssl genrsa -out asterisk.key 2048
+openssl req -new -key asterisk.key -subj "/O=VSB/CN=172.16.0.12" -out asterisk.csr
+cat &gt; asterisk.ext &lt;&lt;'EOF'
+basicConstraints=CA:FALSE
+keyUsage=digitalSignature,keyEncipherment
+extendedKeyUsage=serverAuth,clientAuth
+subjectAltName=IP:172.16.0.12
+EOF
+openssl x509 -req -in asterisk.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+  -days 825 -sha256 -extfile asterisk.ext -out asterisk.crt
+
+# 3) Kamailio
+openssl genrsa -out kamailio.key 2048
+openssl req -new -key kamailio.key -subj "/O=VSB/CN=172.16.0.12" -out kamailio.csr
+cat &gt; kamailio.ext &lt;&lt;'EOF'
+basicConstraints=CA:FALSE
+keyUsage=digitalSignature,keyEncipherment
+extendedKeyUsage=serverAuth,clientAuth
+subjectAltName=IP:172.16.0.12
+EOF
+openssl x509 -req -in kamailio.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+  -days 825 -sha256 -extfile kamailio.ext -out kamailio.crt</code></pre>
+          </div>
+          <div class="terminal">
+            <div class="terminal-label">Nasazení a ověření</div>
+            <pre><code>
+cp ca.crt asterisk.crt asterisk.key ca.key /etc/asterisk/certs/
+chown -R asterisk:asterisk /etc/asterisk/certs
+chmod 640 /etc/asterisk/certs/*.key
+
+cp ca.crt kamailio.crt kamailio.key /etc/kamailio/certs/
+chown -R kamailio:kamailio /etc/kamailio/certs
+chmod 640 /etc/kamailio/certs/*.key
+
+systemctl restart asterisk kamailio
+
+openssl x509 -in /etc/asterisk/certs/asterisk.crt -noout -text | grep -A1 -E "Basic Constraints|Extended Key|Alternative"
+openssl s_client -connect 172.16.0.12:5070 \
+  -cert /etc/kamailio/certs/kamailio.crt \
+  -key /etc/kamailio/certs/kamailio.key \
+  -CAfile /etc/kamailio/certs/ca.crt &lt;/dev/null 2&gt;&amp;1 | grep -E "Verify return|alert"</code></pre>
+          </div>
+        </div>
+
+        <div class="doc-entry">
+          <h2>Instalace Kamailio</h2>
+          <p>Kamailio funguje jako TLS proxy na portu 5061. Po instalaci se nastaví TLS konfigurace a hlavní směrování SIP požadavků.</p>
+          <div class="terminal">
+            <div class="terminal-label">Terminál</div>
+            <pre><code>
+apt install kamailio kamailio-tls-modules
+ls -l /etc/asterisk/certs/kamailio.*
+nano /etc/kamailio/tls.cfg
+nano /etc/kamailio/kamailio.cfg
+            </code></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-block-header"><span>tls.cfg</span><span class="code-block-type">Kamailio TLS</span></div>
+            <pre><code>
+[server:default]
+method = TLSv1.2+
+verify_certificate = no
+require_certificate = no
+private_key = /etc/kamailio/certs/kamailio.key
+certificate = /etc/kamailio/certs/kamailio.crt
+ca_list = /etc/kamailio/certs/ca.crt
+
+[client:default]
+verify_certificate = yes
+require_certificate = yes
+method = TLSv1.2+
+private_key = /etc/kamailio/certs/kamailio.key
+certificate = /etc/kamailio/certs/kamailio.crt
+ca_list = /etc/kamailio/certs/ca.crt</code></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-block-header"><span>kamailio.cfg</span><span class="code-block-type">SIP routing</span></div>
+            <pre><code>
+request_route {
+    route(REQINIT);
+    route(NATDETECT);
+
+    if (is_method("CANCEL")) {
+        dlgs_update();
+        if (t_check_trans()) {
+            route(RELAY);
+        }
+        exit;
+    }
+
+    if (!is_method("ACK")) {
+        if (t_precheck_trans()) {
+            t_check_trans();
+            exit;
+        }
+        t_check_trans();
+    }
+
+    route(WITHINDLG);
+
+    if (is_method("REGISTER")) {
+        route(REGISTRAR);
+        exit;
+    }
+
+    remove_hf("Route");
+    if (is_method("INVITE|SUBSCRIBE|REFER")) {
+        record_route();
+    }
+
+    if (is_method("INVITE")) {
+        if ($si == "172.16.0.11") {
+            if (!lookup("location")) {
+                sl_reply_error();
+                exit;
+            }
+        } else {
+            $du = "sip:172.16.0.11:5070;transport=tls";
+        }
+        setflag(FLT_ACC);
+    }
+
+    route(RELAY);
+    exit;
+}</code></pre>
+          </div>
+        </div>
+
+
+
+        <div class="doc-entry">
+          <h2>PJSIP konfigurace</h2>
+          <p>Transport používá TLS 1.2 a vzájemné ověření certifikátů. Endpointy 2000 a 2001 slouží jako interní telefony a Kamailio jako trunk.</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>pjsip.conf</span><span class="code-block-type">Asterisk</span></div>
+            <pre><code>
+[global]
+type=global
+user_agent=Asterisk-Secure-PBX
+
+; ==========================================
+; SYSTÉMOVÉ NASTAVENÍ ŠIFROVANÉHO PŘENOSU (TLS)
+; ==========================================
+[tls-transport]
+type=transport
+protocol=tls
+bind=0.0.0.0:5070
+cert_file=/etc/asterisk/certs/asterisk.crt
+priv_key_file=/etc/asterisk/certs/asterisk.key
+method=tlsv1_2
+
+verify_client=yes
+require_client_cert=yes
+ca_list_file=/etc/asterisk/certs/ca.crt
+
+[2001]
+type=endpoint
+transport=tls-transport
+media_encryption=sdes
+context=interni
+disallow=all
+allow=ulaw,alaw
+auth=2001
+aors=2001
+direct_media=no
+rtp_symmetric=yes
+force_rport=yes
+
+[2001]
+type=auth
+auth_type=userpass
+username=2001
+password=heslo
+
+[2001]
+type=aor
+max_contacts=10
+
+[2000]
+type=endpoint
+transport=tls-transport
+media_encryption=sdes
+context=interni
+disallow=all
+allow=ulaw,alaw
+auth=2000
+aors=2000
+direct_media=no
+rtp_symmetric=yes
+force_rport=yes
+
+[2000]
+type=auth
+auth_type=userpass
+username=2000
+password=heslo
+
+[2000]
+type=aor
+max_contacts=10
+
+[kamailio-trunk]
+type=endpoint
+transport=tls-transport
+context=z-kamailia
+disallow=all
+allow=ulaw,alaw
+media_encryption=no
+aors=kamailio-trunk
+
+[kamailio-trunk]
+type=aor
+contact=sip:172.16.0.12:5061
+
+[kamailio-trunk]
+type=identify
+endpoint=kamailio-trunk
+match=172.16.0.12
+            </code></pre>
+          </div>
+        </div>
+
+        <div class="doc-entry">
+          <h2>Směrování hovorů</h2>
+          <p>Dialplan předá interní hovory do Kamailia a po návratu je doručí zaregistrovanému telefonu.</p>
+          <div class="code-block">
+            <div class="code-block-header"><span>extensions.conf</span><span class="code-block-type">Dialplan</span></div>
+            <pre><code>
+[general]
+static=yes
+writeprotect=no
+
+[interni]
+exten => _2XXX,1,NoOp(Posilam hovor na Kamailio pres secure trunk)
+exten => _2XXX,n,Hangup()
+
+[z-kamailia]
+; Když ho kamailio vrati, asterisk ho doruči zaregistrovanemu telefonu
+exten => _2XXX,1,NoOp(Hovor se vratil z Kamailia, zvonim na telefon)
+exten => _2XXX,n,Dial(PJSIP/sip:${EXTEN}@kamailio-trunk)
+exten => _2XXX,n,Hangup()
+            </code></pre>
+          </div>
+        </div>
+
+        <div class="doc-entry">
+          <h2>Ověření spojení</h2>
+          <p>Výstup z Asterisku potvrzuje navázání TLS spojení, průchod signalizace přes Kamailio a úspěšné spojení hovoru.</p>
+          <div class="terminal terminal-log">
+            <div class="terminal-label">asterisk -rvvvv</div>
+            <pre><code>
+[Nov  7 10:45:12] NOTICE[4312]: res_pjsip/pjsip_distributor.c:688 log_failed_request: Incoming SIP Request 'INVITE' from endpoint '2000' (identity: "2000" &lt;sip:2000@172.16.0.12&gt;) for 'sip:2001@172.16.0.12'
+    -- Executing [2001@interni:1] Dial("PJSIP/2000-00000001", "PJSIP/2001") in new stack
+    -- Called PJSIP/2001
+&lt;--- Transmitting SIP request (1250 bytes) to TLS:172.16.0.12:5061 ---&gt;
+INVITE sip:2001@172.16.0.11:60314;transport=tls SIP/2.0
+Via: SIP/2.0/TLS 172.16.0.12:5070;rport;branch=z9hG4bKPj88a4...
+From: "2000" &lt;sip:2000@172.16.0.12&gt;;tag=7a3b...
+To: &lt;sip:2001@172.16.0.12&gt;
+Contact: &lt;sip:172.16.0.12:5070;transport=TLS&gt;
+...
+&lt;--- Received SIP response (430 bytes) from TLS:172.16.0.12:5061 ---&gt;
+SIP/2.0 183 Session Progress
+Via: SIP/2.0/TLS 172.16.0.12:5070;rport;branch=z9hG4bKPj88a4...
+From: "2000" &lt;sip:2000@172.16.0.12&gt;;tag=7a3b...
+To: &lt;sip:2001@172.16.0.12&gt;;tag=9c2f...
+RSeq: 1
+...
+    -- PJSIP/2001-00000002 is ringing
+&lt;--- Received SIP response (350 bytes) from TLS:172.16.0.12:5061 ---&gt;
+SIP/2.0 200 OK
+...
+    -- PJSIP/2001-00000002 answered
+    -- Channel PJSIP/2000-00000001 joined 'conference' or bridged to PJSIP/2001-00000002
+[Nov  7 10:45:25] NOTICE[4312]: res_pjsip/pjsip_pubsub.c: CLIENT hungup
+    -- Channel PJSIP/2001-00000002 left bridge
+    -- Executing [2001@interni:2] Hangup("PJSIP/2000-00000001", "") in new stack
+  == Spawn extension (interni, 2001, 2) exited non-zero on 'PJSIP/2000-00000001'
+            </code></pre>
+          </div>
+        </div>
+
+        <div class="doc-entry">
+          <h2>Praktické ukázky</h2>
+          <p>Ukázky konfigurace softwarových telefonů, TLS spojení a zachycené SIP komunikace z testovacího prostředí.</p>
+          <div class="image-gallery">
+            <figure>
+              <img src="images/TLS.png" alt="Nastavení TLS certifikátů a spojení" loading="lazy">
+              <figcaption>TLS konfigurace a ověření certifikátu</figcaption>
+            </figure>
+            <figure>
+              <img src="images/SIP filtr.png" alt="Filtrování SIP komunikace v zachyceném provozu" loading="lazy">
+              <figcaption>Filtr pro SIP komunikaci</figcaption>
+            </figure>
+            <figure>
+              <img src="images/šiforvany packet.png" alt="Zašifrovaný paket zachycený během spojení" loading="lazy">
+              <figcaption>Zašifrovaný paket přenášený přes TLS</figcaption>
+            </figure>
+            <figure>
+              <img src="images/MicroSIP konfigurace.png" alt="Konfigurace klienta MicroSIP" loading="lazy">
+              <figcaption>Konfigurace klienta MicroSIP</figcaption>
+            </figure>
+            <figure>
+              <img src="images/phonerlite konfigurace.webp" alt="Konfigurace klienta PhonerLite" loading="lazy">
+              <figcaption>Konfigurace klienta PhonerLite</figcaption>
+            </figure>
+            <figure>
+              <img src="images/Snímek obrazovky 2026-11-05 230400.png" alt="Snímek obrazovky z testování spojení" loading="lazy">
+              <figcaption>Testování spojení</figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </section>
 
-        <section class="comparison-section" id="communication">
+    <section class="comparison-section" id="communication">
       <div class="container">
         <div class="section-heading">
           <div><p class="eyebrow">05 · Experiment</p><h2>Šifrovaně vs.<br><em>nešifrovaně.</em></h2></div>
-          <p>Porovnejte, co může pozorovatel sítě přečíst z běžného SIP spojení a co uvidí po nasazení TLS.</p>
         </div>
         <div class="comparison">
           <article class="communication-card insecure">
@@ -108,17 +437,6 @@
         </div>
       </div>
     </section>
-
-    <section class="references container" id="references">
-      <div><p class="eyebrow">06 · Zdroje</p><h2>Reference</h2></div>
-      <ol>
-        <li><span>01</span><a href="https://docs.asterisk.org/" target="_blank" rel="noreferrer">Asterisk Documentation <b>↗</b></a></li>
-        <li><span>02</span><a href="https://www.kamailio.org/w/documentation/" target="_blank" rel="noreferrer">Kamailio Documentation <b>↗</b></a></li>
-        <li><span>03</span><a href="https://www.rfc-editor.org/rfc/rfc3261" target="_blank" rel="noreferrer">RFC 3261 · SIP <b>↗</b></a></li>
-        <li><span>04</span><a href="https://www.rfc-editor.org/rfc/rfc8446" target="_blank" rel="noreferrer">RFC 8446 · TLS 1.3 <b>↗</b></a></li>
-      </ol>
-    </section>
-  </main>
 
   <footer class="footer container">
     <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">⌁</span><span>secure<span class="brand-accent">sip</span></span></a>
