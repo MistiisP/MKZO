@@ -416,27 +416,19 @@ SIP/2.0 200 OK
       </div>
     </section>
 
-    <section class="comparison-section" id="communication">
-      <div class="container">
-        <div class="section-heading">
-          <div><p class="eyebrow">05 · Experiment</p><h2>Šifrovaně vs.<br><em>nešifrovaně.</em></h2></div>
-        </div>
-        <div class="comparison">
-          <article class="communication-card insecure">
-            <div class="card-top"><span class="protocol-badge">TCP / UDP · 5060</span><span class="risk">Rizikové</span></div>
-            <h3>Nešifrovaná komunikace</h3>
-            <div class="code-window"><span class="code-muted">INVITE sip:</span> <span class="code-red">+420777123456</span><br><span class="code-muted">From:</span> &lt;<span class="code-red">sip:101@asterisk</span>&gt;<br><span class="code-muted">Call-ID:</span> <span class="code-red">a84b4c76e66710</span><br><span class="code-muted">Contact:</span> <span class="code-red">192.168.1.20</span></div>
-            <p>Hlavičky a adresy jsou dostupné v otevřeném textu. Lze je odposlechnout nebo změnit.</p>
-          </article>
-          <article class="communication-card secure">
-            <div class="card-top"><span class="protocol-badge">TLS · 5061</span><span class="safe">Chráněné</span></div>
-            <h3>Šifrovaná komunikace</h3>
-            <div class="code-window"><span class="code-green">ClientHello</span> <span class="code-muted">→ Kamailio</span><br><span class="code-green">Certificate verified</span><br><span class="code-green">Encrypted Application Data</span><br><span class="code-muted">••••••••••••••••••••••</span></div>
-            <p>Obsah SIP zprávy je po navázání relace skrytý. Viditelný zůstává pouze šifrovaný tok.</p>
-          </article>
-        </div>
+    
+
+    <section class="section conclusion container" id="conclusion">
+      <div class="documentation-content">
+        <p class="eyebrow">05 · Závěr</p>
+      </div>
+      <div class="section-body">
+        <p class="lead">Projektem se podařilo vytvořit a ověřit funkční SIP trunk mezi Asteriskem a Kamailiem, který zabezpečuje SIP signalizaci pomocí TLS.</p>
+        <p class="lead">Byla vytvořena vlastní certifikační autorita a certifikáty pro obě strany. Asterisk i Kamailio se díky nim vzájemně ověřují, takže lze potvrdit autenticitu protistrany a integritu přenášených zpráv.</p>
+        <p class="lead">Správnost konfigurace byla ověřena navázáním TLS spojení, kontrolou certifikátů, zachycením šifrovaného provozu a uskutečněním testovacího hovoru mezi telefony 2000 a 2001. Výsledkem je trunk, přes který lze bezpečně směrovat SIP signalizaci mezi ústřednou a proxy serverem.</p>
       </div>
     </section>
+
 
   <footer class="footer container">
     <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">⌁</span><span>secure<span class="brand-accent">sip</span></span></a>

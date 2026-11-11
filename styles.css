@@ -71,6 +71,8 @@ em { color: var(--green); font-style: normal; }
 .visual-label span { margin: 0 10px; color: var(--orange); }
 
 .section { display: grid; grid-template-columns: 38% 1fr; gap: 70px; padding-top: 145px; padding-bottom: 145px; }
+.conclusion { grid-template-columns: 1fr; gap: 30px; }
+.conclusion .section-body { padding-top: 0; }
 #documentation { display: block; }
 #documentation > .eyebrow { margin-bottom: 32px; }
 .section-body { padding-top: 25px; }
@@ -107,11 +109,11 @@ em { color: var(--green); font-style: normal; }
 .doc-entry:last-child { padding-bottom: 0; border-bottom: 0; }
 .doc-entry h3 { margin-bottom: 10px; font-size: 22px; }
 .doc-entry h2 { margin-bottom: 12px; font-size: clamp(24px, 3vw, 34px); }
-.doc-entry p { margin: 0; color: var(--muted); font-size: 15px; }
+.doc-entry p { margin: 0; color: var(--muted); font-size: 17px; }
 .doc-entry img { display: block; max-width: 100%; height: auto; margin-top: 24px; border: 1px solid var(--line); }
 .image-gallery { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 28px; }
 .image-gallery figure { min-width: 0; margin: 0; }
-.image-gallery img { width: 100%; height: auto; margin-top: 0; object-fit: contain; background: #eef3ee; }
+.image-gallery img { width: 90%; height: auto; margin: 0 auto; object-fit: contain; background: #eef3ee; }
 .image-gallery figcaption { margin-top: 10px; color: var(--muted); font: 16px/1.5 'DM Mono', monospace; }
 .terminal, .code-block { margin-top: 24px; overflow: hidden; border: 1px solid #29483e; background: var(--dark); }
 .terminal-label, .code-block-header { padding: 10px 16px; color: var(--mint); background: #203b33; font: 10px 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }

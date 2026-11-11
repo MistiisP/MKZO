@@ -1,2 +1,2 @@
 # MKZO
-- live 
+Projekt do předmětu Multimediální komunikace a bezpečnost.
